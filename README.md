@@ -42,7 +42,6 @@ httpSourceSelector:
 
 ```sh
 npm install --save videojs-contrib-quality-levels
-npm install --save videojs-http-source-selector
 ```
 
 # Dependencies
