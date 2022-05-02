@@ -4,12 +4,22 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var videojs = _interopDefault(require('video.js'));
 
-var version = "1.1.5";
+var version = "1.1.6";
 
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
   subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
+
+  _setPrototypeOf(subClass, superClass);
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
 }
 
 function _assertThisInitialized(self) {
@@ -23,9 +33,7 @@ function _assertThisInitialized(self) {
 var MenuItem = videojs.getComponent('MenuItem');
 var Component = videojs.getComponent('Component');
 
-var SourceMenuItem =
-/*#__PURE__*/
-function (_MenuItem) {
+var SourceMenuItem = /*#__PURE__*/function (_MenuItem) {
   _inheritsLoose(SourceMenuItem, _MenuItem);
 
   function SourceMenuItem(player, options) {
@@ -68,9 +76,7 @@ Component.registerComponent('SourceMenuItem', SourceMenuItem);
 
 var MenuButton = videojs.getComponent('MenuButton');
 
-var SourceMenuButton =
-/*#__PURE__*/
-function (_MenuButton) {
+var SourceMenuButton = /*#__PURE__*/function (_MenuButton) {
   _inheritsLoose(SourceMenuButton, _MenuButton);
 
   function SourceMenuButton(player, options) {
@@ -78,6 +84,8 @@ function (_MenuButton) {
 
     _this = _MenuButton.call(this, player, options) || this;
     MenuButton.apply(_assertThisInitialized(_this), arguments);
+
+    _this.controlText('Quality Picker');
 
     var qualityLevels = _this.player().qualityLevels(); // Handle options: We accept an options.default value of ( high || low )
     // This determines a bias to set initial resolution selection.
