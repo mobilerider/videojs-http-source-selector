@@ -127,7 +127,9 @@ var SourceMenuButton = /*#__PURE__*/function (_MenuButton) {
     var labels = [];
 
     for (var i = 0; i < levels.length; i++) {
-      var index = levels.length - (i + 1);
+      // var index = levels.length - (i + 1);
+      // Select by default 0 in repeated quality levels.
+      var index = i;
       var selected = index === levels.selectedIndex; // Display height if height metadata is provided with the stream, else use bitrate
 
       var label = "" + index;
