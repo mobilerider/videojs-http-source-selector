@@ -9,6 +9,7 @@ class SourceMenuItem extends MenuItem
     options.multiSelectable = false;
 
     super(player, options);
+    this.addClass('quality-'+options.label.toLowerCase());
   }
 
   handleClick() {

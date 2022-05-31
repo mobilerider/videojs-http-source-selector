@@ -45,9 +45,15 @@
     _inheritsLoose(SourceMenuItem, _MenuItem);
 
     function SourceMenuItem(player, options) {
+      var _this;
+
       options.selectable = true;
       options.multiSelectable = false;
-      return _MenuItem.call(this, player, options) || this;
+      _this = _MenuItem.call(this, player, options) || this;
+
+      _this.addClass('quality-' + options.label.toLowerCase());
+
+      return _this;
     }
 
     var _proto = SourceMenuItem.prototype;
