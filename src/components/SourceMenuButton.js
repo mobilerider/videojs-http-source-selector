@@ -41,6 +41,7 @@ class SourceMenuButton extends MenuButton
   }
 
   update() {
+    this.focus();
     return MenuButton.prototype.update.call(this);
   }
 

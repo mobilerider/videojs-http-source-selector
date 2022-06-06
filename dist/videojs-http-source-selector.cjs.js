@@ -128,6 +128,7 @@ var SourceMenuButton = /*#__PURE__*/function (_MenuButton) {
   };
 
   _proto.update = function update() {
+    this.focus();
     return MenuButton.prototype.update.call(this);
   };
 
