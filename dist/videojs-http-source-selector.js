@@ -136,6 +136,7 @@
     };
 
     _proto.update = function update() {
+      this.focus();
       return MenuButton.prototype.update.call(this);
     };
 
