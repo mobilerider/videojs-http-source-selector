@@ -15,13 +15,17 @@ class SourceMenuItem extends MenuItem
   handleClick() {
     var selected = this.options_;
     console.log("Changing quality to:", selected.label);
-    super.handleClick();
 
     var levels = this.player().qualityLevels();
+    if (selected.index != levels.length) {
+      super.handleClick();
+    }
+
     for(var i = 0; i < levels.length; i++) {
       if (selected.index == levels.length) {
         // If this is the Auto option, enable all renditions for adaptive selection
         levels[i].enabled = true;
+        break;
       } else if (selected.index == i) {
         levels[i].enabled = true;
       } else {
