@@ -51,7 +51,7 @@
       options.multiSelectable = false;
       _this = _MenuItem.call(this, player, options) || this;
 
-      _this.addClass('quality-' + options.label.toLowerCase());
+      _this.addClass('quality-' + options.label.replace(/ /g, "-").toLowerCase());
 
       return _this;
     }
