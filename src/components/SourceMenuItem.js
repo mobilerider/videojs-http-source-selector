@@ -25,7 +25,6 @@ class SourceMenuItem extends MenuItem
       if (selected.index == levels.length) {
         // If this is the Auto option, enable all renditions for adaptive selection
         levels[i].enabled = true;
-        break;
       } else if (selected.index == i) {
         levels[i].enabled = true;
       } else {
