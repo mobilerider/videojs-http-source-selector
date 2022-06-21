@@ -10,6 +10,7 @@ class SourceMenuButton extends MenuButton
 
     MenuButton.apply(this, arguments);
     this.controlText('Quality Picker');
+    // options.default = 'auto';
     var qualityLevels = this.player().qualityLevels();
 
     // Handle options: We accept an options.default value of ( high || low )
@@ -17,11 +18,11 @@ class SourceMenuButton extends MenuButton
     if (options && options.default) {
       if (options.default == 'low') {
         for (var i = 0; i < qualityLevels.length; i++) {
-          qualityLevels[i].enabled = (i == 0);
+          qualityLevels[i].enabled = (i == (qualityLevels.length - 1));
         }
       } else if (options.default = 'high') {
         for (var i = 0; i < qualityLevels.length; i++) {
-          qualityLevels[i].enabled = (i == (qualityLevels.length - 1));
+          qualityLevels[i].enabled = (i == 0);
         }
       }
     }

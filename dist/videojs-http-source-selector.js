@@ -51,7 +51,7 @@
       options.multiSelectable = false;
       _this = _MenuItem.call(this, player, options) || this;
 
-      _this.addClass('quality-' + options.label.toLowerCase());
+      _this.addClass('quality-' + options.label.replace(/ /g, "-").toLowerCase());
 
       return _this;
     }
@@ -61,10 +61,11 @@
     _proto.handleClick = function handleClick() {
       var selected = this.options_;
       console.log("Changing quality to:", selected.label);
-
-      _MenuItem.prototype.handleClick.call(this);
-
       var levels = this.player().qualityLevels();
+
+      if (selected.index != levels.length) {
+        _MenuItem.prototype.handleClick.call(this);
+      }
 
       for (var i = 0; i < levels.length; i++) {
         if (selected.index == levels.length) {
@@ -99,7 +100,8 @@
       _this = _MenuButton.call(this, player, options) || this;
       MenuButton.apply(_assertThisInitialized(_this), arguments);
 
-      _this.controlText('Quality Picker');
+      _this.controlText('Quality Picker'); // options.default = 'auto';
+
 
       var qualityLevels = _this.player().qualityLevels(); // Handle options: We accept an options.default value of ( high || low )
       // This determines a bias to set initial resolution selection.
@@ -108,11 +110,11 @@
       if (options && options["default"]) {
         if (options["default"] == 'low') {
           for (var i = 0; i < qualityLevels.length; i++) {
-            qualityLevels[i].enabled = i == 0;
+            qualityLevels[i].enabled = i == qualityLevels.length - 1;
           }
         } else if (options["default"] = 'high') {
           for (var i = 0; i < qualityLevels.length; i++) {
-            qualityLevels[i].enabled = i == qualityLevels.length - 1;
+            qualityLevels[i].enabled = i == 0;
           }
         }
       } // Bind update to qualityLevels changes
@@ -222,9 +224,9 @@
   */
 
   var onPlayerReady = function onPlayerReady(player, options) {
-    player.addClass('vjs-http-source-selector');
-    console.log("videojs-http-source-selector initialized!");
-    console.log("player.techName_:" + player.techName_); //This plugin only supports level selection for HLS playback
+    player.addClass('vjs-http-source-selector'); // console.log("videojs-http-source-selector initialized!");
+    // console.log("player.techName_:"+player.techName_);
+    //This plugin only supports level selection for HLS playback
 
     if (player.techName_ != 'Html5') {
       return false;
@@ -237,13 +239,8 @@
 
 
     player.on(['loadedmetadata'], function (e) {
-      var qualityLevels = player.qualityLevels();
-      videojs.log('loadmetadata event'); // hack for plugin idempodency... prevents duplicate menubuttons from being inserted into the player if multiple player.httpSourceSelector() functions called.
-
-      if (player.videojs_http_source_selector_initialized == 'undefined' || player.videojs_http_source_selector_initialized == true) {
-        console.log("player.videojs_http_source_selector_initialized == true");
-      } else {
-        console.log("player.videojs_http_source_selector_initialized == false");
+      // hack for plugin idempodency... prevents duplicate menubuttons from being inserted into the player if multiple player.httpSourceSelector() functions called.
+      if (player.videojs_http_source_selector_initialized == undefined || player.videojs_http_source_selector_initialized == false) {
         player.videojs_http_source_selector_initialized = true;
         var controlBar = player.controlBar,
             fullscreenToggle = controlBar.getChild('fullscreenToggle').el();
