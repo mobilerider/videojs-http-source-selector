@@ -15,7 +15,7 @@ class SourceMenuItem extends MenuItem
   handleClick() {
     var selected = this.options_;
     console.log("Changing quality to:", selected.label);
-
+    this.parentComponent_.parentComponent_.focus();
     var levels = this.player().qualityLevels();
     if (selected.index != levels.length) {
       super.handleClick();
