@@ -49,6 +49,7 @@ var SourceMenuItem = /*#__PURE__*/function (_MenuItem) {
   _proto.handleClick = function handleClick() {
     var selected = this.options_;
     console.log("Changing quality to:", selected.label);
+    this.parentComponent_.parentComponent_.focus();
     var levels = this.player().qualityLevels();
 
     if (selected.index != levels.length) {
@@ -126,7 +127,6 @@ var SourceMenuButton = /*#__PURE__*/function (_MenuButton) {
   };
 
   _proto.update = function update() {
-    this.focus();
     return MenuButton.prototype.update.call(this);
   };
 
