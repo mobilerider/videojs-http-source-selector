@@ -10,7 +10,7 @@ class SourceMenuButton extends MenuButton
 
     MenuButton.apply(this, arguments);
     this.controlText('Quality Picker');
-    // options.default = 'auto';
+
     var qualityLevels = this.player().qualityLevels();
 
     // Handle options: We accept an options.default value of ( high || low )
@@ -18,11 +18,11 @@ class SourceMenuButton extends MenuButton
     if (options && options.default) {
       if (options.default == 'low') {
         for (var i = 0; i < qualityLevels.length; i++) {
-          qualityLevels[i].enabled = (i == (qualityLevels.length - 1));
+          qualityLevels[i].enabled = (i == 0);
         }
       } else if (options.default = 'high') {
         for (var i = 0; i < qualityLevels.length; i++) {
-          qualityLevels[i].enabled = (i == 0);
+          qualityLevels[i].enabled = (i == (qualityLevels.length - 1));
         }
       }
     }
@@ -51,9 +51,7 @@ class SourceMenuButton extends MenuButton
     var labels = [];
 
     for (var i = 0; i < levels.length; i++) {
-      // var index = levels.length - (i + 1);
-      // Select by default 0 in repeated quality levels.
-      var index = i;
+      var index = levels.length - (i + 1);
       var selected = (index === levels.selectedIndex);
 
       // Display height if height metadata is provided with the stream, else use bitrate

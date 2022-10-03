@@ -9,18 +9,16 @@ class SourceMenuItem extends MenuItem
     options.multiSelectable = false;
 
     super(player, options);
-    this.addClass('quality-'+options.label.replace(/ /g, "-").toLowerCase());
+    this.addClass('quality-'+options.label.toLowerCase());
   }
 
   handleClick() {
     var selected = this.options_;
     console.log("Changing quality to:", selected.label);
     this.parentComponent_.parentComponent_.focus();
-    var levels = this.player().qualityLevels();
-    if (selected.index != levels.length) {
-      super.handleClick();
-    }
+    super.handleClick();
 
+    var levels = this.player().qualityLevels();
     for(var i = 0; i < levels.length; i++) {
       if (selected.index == levels.length) {
         // If this is the Auto option, enable all renditions for adaptive selection

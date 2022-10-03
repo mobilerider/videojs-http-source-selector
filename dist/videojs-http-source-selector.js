@@ -51,7 +51,7 @@
       options.multiSelectable = false;
       _this = _MenuItem.call(this, player, options) || this;
 
-      _this.addClass('quality-' + options.label.replace(/ /g, "-").toLowerCase());
+      _this.addClass('quality-' + options.label.toLowerCase());
 
       return _this;
     }
@@ -62,11 +62,10 @@
       var selected = this.options_;
       console.log("Changing quality to:", selected.label);
       this.parentComponent_.parentComponent_.focus();
-      var levels = this.player().qualityLevels();
 
-      if (selected.index != levels.length) {
-        _MenuItem.prototype.handleClick.call(this);
-      }
+      _MenuItem.prototype.handleClick.call(this);
+
+      var levels = this.player().qualityLevels();
 
       for (var i = 0; i < levels.length; i++) {
         if (selected.index == levels.length) {
@@ -101,8 +100,7 @@
       _this = _MenuButton.call(this, player, options) || this;
       MenuButton.apply(_assertThisInitialized(_this), arguments);
 
-      _this.controlText('Quality Picker'); // options.default = 'auto';
-
+      _this.controlText('Quality Picker');
 
       var qualityLevels = _this.player().qualityLevels(); // Handle options: We accept an options.default value of ( high || low )
       // This determines a bias to set initial resolution selection.
@@ -111,11 +109,11 @@
       if (options && options["default"]) {
         if (options["default"] == 'low') {
           for (var i = 0; i < qualityLevels.length; i++) {
-            qualityLevels[i].enabled = i == qualityLevels.length - 1;
+            qualityLevels[i].enabled = i == 0;
           }
         } else if (options["default"] = 'high') {
           for (var i = 0; i < qualityLevels.length; i++) {
-            qualityLevels[i].enabled = i == 0;
+            qualityLevels[i].enabled = i == qualityLevels.length - 1;
           }
         }
       } // Bind update to qualityLevels changes
@@ -148,9 +146,7 @@
       var labels = [];
 
       for (var i = 0; i < levels.length; i++) {
-        // var index = levels.length - (i + 1);
-        // Select by default 0 in repeated quality levels.
-        var index = i;
+        var index = levels.length - (i + 1);
         var selected = index === levels.selectedIndex; // Display height if height metadata is provided with the stream, else use bitrate
 
         var label = "" + index;
@@ -209,38 +205,43 @@
   var registerPlugin = videojs.registerPlugin || videojs.plugin; // const dom = videojs.dom || videojs;
 
   /**
-  * Function to invoke when the player is ready.
-  *
-  * This is a great place for your plugin to initialize itself. When this
-  * function is called, the player will have its DOM and child components
-  * in place.
-  *
-  * @function onPlayerReady
-  * @param    {Player} player
-  *           A Video.js player object.
-  *
-  * @param    {Object} [options={}]
-  *           A plain object containing options for the plugin.
-  */
+   * Function to invoke when the player is ready.
+   *
+   * This is a great place for your plugin to initialize itself. When this
+   * function is called, the player will have its DOM and child components
+   * in place.
+   *
+   * @function onPlayerReady
+   * @param    {Player} player
+   *           A Video.js player object.
+   *
+   * @param    {Object} [options={}]
+   *           A plain object containing options for the plugin.
+   */
 
   var onPlayerReady = function onPlayerReady(player, options) {
-    player.addClass('vjs-http-source-selector'); // console.log("videojs-http-source-selector initialized!");
-    // console.log("player.techName_:"+player.techName_);
-    //This plugin only supports level selection for HLS playback
+    player.addClass('vjs-http-source-selector');
+    console.log("videojs-http-source-selector initialized!");
+    console.log("player.techName_:" + player.techName_); //This plugin only supports level selection for HLS playback
 
     if (player.techName_ != 'Html5') {
       return false;
     }
     /**
-    *
-    * We have to wait for the manifest to load before we can scan renditions for resolutions/bitrates to populate selections
-    *
-    **/
+     *
+     * We have to wait for the manifest to load before we can scan renditions for resolutions/bitrates to populate selections
+     *
+     **/
 
 
     player.on(['loadedmetadata'], function (e) {
-      // hack for plugin idempodency... prevents duplicate menubuttons from being inserted into the player if multiple player.httpSourceSelector() functions called.
-      if (player.videojs_http_source_selector_initialized == undefined || player.videojs_http_source_selector_initialized == false) {
+      var qualityLevels = player.qualityLevels();
+      videojs.log('loadmetadata event'); // hack for plugin idempodency... prevents duplicate menubuttons from being inserted into the player if multiple player.httpSourceSelector() functions called.
+
+      if (player.videojs_http_source_selector_initialized == 'undefined' || player.videojs_http_source_selector_initialized == true) {
+        console.log("player.videojs_http_source_selector_initialized == true");
+      } else {
+        console.log("player.videojs_http_source_selector_initialized == false");
         player.videojs_http_source_selector_initialized = true;
         var controlBar = player.controlBar,
             fullscreenToggle = controlBar.getChild('fullscreenToggle').el();
@@ -249,17 +250,17 @@
     });
   };
   /**
-  * A video.js plugin.
-  *
-  * In the plugin function, the value of `this` is a video.js `Player`
-  * instance. You cannot rely on the player being in a "ready" state here,
-  * depending on how the plugin is invoked. This may or may not be important
-  * to you; if not, remove the wait for "ready"!
-  *
-  * @function httpSourceSelector
-  * @param    {Object} [options={}]
-  *           An object of options left to the plugin author to define.
-  */
+   * A video.js plugin.
+   *
+   * In the plugin function, the value of `this` is a video.js `Player`
+   * instance. You cannot rely on the player being in a "ready" state here,
+   * depending on how the plugin is invoked. This may or may not be important
+   * to you; if not, remove the wait for "ready"!
+   *
+   * @function httpSourceSelector
+   * @param    {Object} [options={}]
+   *           An object of options left to the plugin author to define.
+   */
 
 
   var httpSourceSelector = function httpSourceSelector(options) {
