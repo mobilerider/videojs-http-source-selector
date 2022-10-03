@@ -51,7 +51,8 @@ class SourceMenuButton extends MenuButton
     var labels = [];
 
     for (var i = 0; i < levels.length; i++) {
-      var index = levels.length - (i + 1);
+      // var index = levels.length - (i + 1);
+      var index = i;
       var selected = (index === levels.selectedIndex);
 
       // Display height if height metadata is provided with the stream, else use bitrate
