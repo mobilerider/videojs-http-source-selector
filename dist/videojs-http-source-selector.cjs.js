@@ -37,15 +37,9 @@ var SourceMenuItem = /*#__PURE__*/function (_MenuItem) {
   _inheritsLoose(SourceMenuItem, _MenuItem);
 
   function SourceMenuItem(player, options) {
-    var _this;
-
     options.selectable = true;
     options.multiSelectable = false;
-    _this = _MenuItem.call(this, player, options) || this;
-
-    _this.addClass('quality-' + options.label.toLowerCase());
-
-    return _this;
+    return _MenuItem.call(this, player, options) || this;
   }
 
   var _proto = SourceMenuItem.prototype;
@@ -53,7 +47,6 @@ var SourceMenuItem = /*#__PURE__*/function (_MenuItem) {
   _proto.handleClick = function handleClick() {
     var selected = this.options_;
     console.log("Changing quality to:", selected.label);
-    this.parentComponent_.parentComponent_.focus();
 
     _MenuItem.prototype.handleClick.call(this);
 
@@ -91,8 +84,6 @@ var SourceMenuButton = /*#__PURE__*/function (_MenuButton) {
 
     _this = _MenuButton.call(this, player, options) || this;
     MenuButton.apply(_assertThisInitialized(_this), arguments);
-
-    _this.controlText('Quality Picker');
 
     var qualityLevels = _this.player().qualityLevels(); // Handle options: We accept an options.default value of ( high || low )
     // This determines a bias to set initial resolution selection.
@@ -138,8 +129,7 @@ var SourceMenuButton = /*#__PURE__*/function (_MenuButton) {
     var labels = [];
 
     for (var i = 0; i < levels.length; i++) {
-      // var index = levels.length - (i + 1);
-      var index = i;
+      var index = levels.length - (i + 1);
       var selected = index === levels.selectedIndex; // Display height if height metadata is provided with the stream, else use bitrate
 
       var label = "" + index;

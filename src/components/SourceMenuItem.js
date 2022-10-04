@@ -9,13 +9,11 @@ class SourceMenuItem extends MenuItem
     options.multiSelectable = false;
 
     super(player, options);
-    this.addClass('quality-'+options.label.toLowerCase());
   }
 
   handleClick() {
     var selected = this.options_;
     console.log("Changing quality to:", selected.label);
-    this.parentComponent_.parentComponent_.focus();
     super.handleClick();
 
     var levels = this.player().qualityLevels();
