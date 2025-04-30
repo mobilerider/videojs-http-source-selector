@@ -3,33 +3,28 @@ import SourceMenuItem from './SourceMenuItem';
 
 const MenuButton = videojs.getComponent('MenuButton');
 
-class SourceMenuButton extends MenuButton
-{
+class SourceMenuButton extends MenuButton {
   constructor(player, options) {
     super(player, options);
-
-    MenuButton.apply(this, arguments);
     this.controlText('Quality Picker');
 
-    var qualityLevels = this.player().qualityLevels();
+    const qualityLevels = this.player().qualityLevels();
 
     // Handle options: We accept an options.default value of ( high || low )
-    // This determines a bias to set initial resolution selection.
     if (options && options.default) {
-      if (options.default == 'low') {
-        for (var i = 0; i < qualityLevels.length; i++) {
-          qualityLevels[i].enabled = (i == 0);
+      if (options.default === 'low') {
+        for (let i = 0; i < qualityLevels.length; i++) {
+          qualityLevels[i].enabled = (i === 0);
         }
-      } else if (options.default = 'high') {
-        for (var i = 0; i < qualityLevels.length; i++) {
-          qualityLevels[i].enabled = (i == (qualityLevels.length - 1));
+      } else if (options.default === 'high') {
+        for (let i = 0; i < qualityLevels.length; i++) {
+          qualityLevels[i].enabled = (i === qualityLevels.length - 1);
         }
       }
     }
 
-    // Bind update to qualityLevels changes
     this.player().qualityLevels().on(['change', 'addqualitylevel'], videojs.bind(this, this.update));
-  };
+  }
 
   createEl() {
     return videojs.dom.createEl('div', {
@@ -38,49 +33,51 @@ class SourceMenuButton extends MenuButton
   }
 
   buildCSSClass() {
-    return MenuButton.prototype.buildCSSClass.call( this ) + ' vjs-icon-cog';
+    return super.buildCSSClass() + ' vjs-icon-cog';
   }
 
   update() {
-    return MenuButton.prototype.update.call(this);
+    return super.update();
   }
 
   createItems() {
-    var menuItems = [];
-    var levels = this.player().qualityLevels();
-    var labels = [];
+    const menuItems = [];
+    const levels = this.player().qualityLevels();
+    const labels = [];
 
-    for (var i = 0; i < levels.length; i++) {
-      var index = levels.length - (i + 1);
-      var selected = (index === levels.selectedIndex);
+    for (let i = 0; i < levels.length; i++) {
+      const index = levels.length - (i + 1);
+      const selected = (index === levels.selectedIndex);
 
-      // Display height if height metadata is provided with the stream, else use bitrate
-      var label = `${index}`;
-      var sortVal = index;
+      let label = `${index}`;
+      let sortVal = index;
+
       if (levels[index].height) {
         label = `${levels[index].height}p`;
-        sortVal = parseInt(levels[index].height, 10)
+        sortVal = parseInt(levels[index].height, 10);
       } else if (levels[index].bitrate) {
         label = `${Math.floor(levels[index].bitrate / 1e3)} kbps`;
-        sortVal = parseInt(levels[index].bitrate, 10)
+        sortVal = parseInt(levels[index].bitrate, 10);
       }
 
-      // Skip duplicate labels
       if (labels.indexOf(label) >= 0) {
-        continue
+        continue;
       }
       labels.push(label);
 
       menuItems.push(new SourceMenuItem(this.player_, { label, index, selected, sortVal }));
     }
 
-    // If there are multiple quality levels, offer an 'auto' option
     if (levels.length > 1) {
-      menuItems.push(new SourceMenuItem(this.player_, { label: 'Auto', index: levels.length, selected: false, sortVal: 99999 }));
+      menuItems.push(new SourceMenuItem(this.player_, {
+        label: 'Auto',
+        index: levels.length,
+        selected: false,
+        sortVal: 99999
+      }));
     }
 
-    // Sort menu items by their label name with Auto always first
-    menuItems.sort(function(a, b) {
+    menuItems.sort((a, b) => {
       if (a.options_.sortVal < b.options_.sortVal) {
         return 1;
       } else if (a.options_.sortVal > b.options_.sortVal) {
@@ -91,6 +88,9 @@ class SourceMenuButton extends MenuButton
     });
 
     return menuItems;
+  }
+
+  handleLanguagechange() {
   }
 }
 
