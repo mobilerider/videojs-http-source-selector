@@ -44,6 +44,7 @@ export default {
     babel({
       babelrc: false,
       exclude: 'node_modules/**',
+      babelHelpers: 'bundled',  // Ensure bundled helpers
       presets: [
         ['@babel/preset-env', {
           loose: true,
@@ -51,7 +52,6 @@ export default {
         }]
       ],
       plugins: [
-        '@babel/external-helpers',
         '@babel/transform-object-assign'
       ]
     })
